@@ -9,3 +9,18 @@ set expandtab
 if !has('gui_running')
   set t_Co=256
 endif
+
+let g:lightline = {
+    \ 'active': {
+    \   'left': [ [ 'mode', 'paste'],
+    \             [ 'readonly', 'filename', 'modified' ] ],
+    \   'right': [ [ 'lineinfo' ],
+    \              [ 'percent', ],
+    \              [ 'fileformat', 'fileencoding', 'filetype', 'gitbranch'] ]
+    \ },
+    \ 'component_function': {
+    \   'gitbranch': 'gitbranch#name'
+    \ },
+    \ }
+
+
