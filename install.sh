@@ -6,9 +6,9 @@ CURRENT_FOLDER="$PWD"
 cat << EOF
 ##  ##
 ## ##         ##
-####   ##  ##  #
-## ##    ##    configs for
-##  ## ##  ##  $PLATFORM
+####   ##  ##  # 
+## ##    ##      configs for $PLATFORM
+##  ## ##  ##    revision of 2019-02-20
 
 EOF
 

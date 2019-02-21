@@ -30,6 +30,5 @@ else
     alias ttlish="sudo sysctl net.ipv4.ip_default_ttl=64"
 fi
 
-# Git after conflict resolution
 alias gitresovle="git commit -a --no-edit && git push"
-
+alias gitprune="git branch -lq | sed -e 's/^.*master//' | xargs git branch -D"
