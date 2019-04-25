@@ -7,6 +7,10 @@ plugins=(git httpie zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
 
+# Golang dependencies
+[[ `uname` != "Darwin" ]] && export PATH=$PATH:/usr/local/go/bin
+[[ "$(which go >> /dev/null; echo $?)" == 0 ]] && export GOPATH="$HOME/Development/golang"
+
 # Aliases and logic for Darwin and other devices
 if [[ `uname` == "Darwin" ]];
 then
@@ -15,7 +19,7 @@ then
     alias airport=/System/Library/PrivateFrameworks/Apple80211.framework/Versions/A/Resources/airport
     alias clipp="pbcopy"
     alias ttlish="sudo sysctl net.inet.ip.ttl=65"
-else 
+else
     alias ttlish="sudo sysctl net.ipv4.ip_default_ttl=64"
 fi
 
@@ -26,8 +30,6 @@ then
 fi
 
 [[ "$(which thefuck >> /dev/null; echo $?)" == 0 ]] && eval $(thefuck --alias)
-
-export GOPATH="$HOME/Development/golang"
 
 # Usefull git aliases
 alias gitresovle="git commit -a --no-edit && git push"
