@@ -6,20 +6,19 @@ HIST_STAMPS="mm.dd.yyyy"
 plugins=(git httpie zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
-
-# Golang dependencies
-[[ `uname` != "Darwin" ]] && export PATH=$PATH:/usr/local/go/bin
-[[ "$(which go >> /dev/null; echo $?)" == 0 ]] && export GOPATH="$HOME/Development/golang"
+[[ -d "$HOME/.local/bin" ]] && export PATH=$PATH:$HOME/.local/bin
 
 # Aliases and logic for Darwin and other devices
 if [[ `uname` == "Darwin" ]];
 then
     test -e "$HOME/.iterm2_shell_integration.zsh" && source "$HOME/.iterm2_shell_integration.zsh"
-    export PATH=$HOME/.local/bin:$PATH
     alias airport=/System/Library/PrivateFrameworks/Apple80211.framework/Versions/A/Resources/airport
     alias clipp="pbcopy"
     alias ttlish="sudo sysctl net.inet.ip.ttl=65"
 else
+    [[ -d "/usr/local/go" ]] && export PATH=$PATH:/usr/local/go/bin
+    [[ "$(which go >> /dev/null; echo $?)" == 0 ]] && export GOPATH="$HOME/Development/golang"
+
     alias ttlish="sudo sysctl net.ipv4.ip_default_ttl=64"
 fi
 
