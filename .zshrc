@@ -13,13 +13,13 @@ if [[ `uname` == "Darwin" ]];
 then
     test -e "$HOME/.iterm2_shell_integration.zsh" && source "$HOME/.iterm2_shell_integration.zsh"
     alias airport=/System/Library/PrivateFrameworks/Apple80211.framework/Versions/A/Resources/airport
-    alias clipp="pbcopy"
+    alias cclip="pbcopy"
     alias ttlish="sudo sysctl net.inet.ip.ttl=65"
 else
     [[ -d "/usr/local/go" ]] && export PATH=$PATH:/usr/local/go/bin
     [[ "$(which go >> /dev/null; echo $?)" == 0 ]] && export GOPATH="$HOME/Development/golang"
-
-    alias ttlish="sudo sysctl net.ipv4.ip_default_ttl=64"
+    alias cclip="xclip -selection clipboard"
+    alias ttlish="sudo sysctl net.ipv4.ip_default_ttl=65"
 fi
 
 if [[ -d "$HOME/.nvm" ]];

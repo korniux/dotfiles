@@ -8,7 +8,7 @@ cat << EOF
 ## ##         ##
 ####   ##  ##  # 
 ## ##    ##      configs for $PLATFORM
-##  ## ##  ##    revision of 2019-02-20
+##  ## ##  ##    revision of $(git log -1 --format=%cd)
 
 EOF
 
@@ -34,6 +34,12 @@ function zshInstall() {
     fi
     echo "#### Installing syntax highlighting"
     git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+    if [ `which pip3` != "" ];
+    then
+        echo "### Installing thefuck"
+        pip3 install thefuck
+    fi
+
     echo "#### $(which zsh) SUCCESS"
 }
 
