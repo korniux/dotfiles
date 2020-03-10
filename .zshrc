@@ -1,17 +1,37 @@
-export ZSH=$HOME/.oh-my-zsh
-export EDITOR=vim
+# zplug
+[[ ! -d "$HOME/.zplug" ]] && curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
+source ~/.zplug/init.zsh
 
-ZSH_THEME="agnoster"
-HIST_STAMPS="mm.dd.yyyy"
-plugins=(git httpie zsh-syntax-highlighting)
+zplug "zsh-users/zsh-syntax-highlighting", defer:2
+zplug "lukechilds/zsh-nvm"
+zplug "plugins/git", from:oh-my-zsh
+zplug "themes/agnoster", from:oh-my-zsh, as:theme
+zplug "plugins/command-not-found", from:oh-my-zsh
 
-source $ZSH/oh-my-zsh.sh
+if ! zplug check --verbose; then
+    printf "[zplug] Install plugins? [y/N]: "
+    if read -q; then
+        echo; zplug install
+    fi
+fi
+zplug load
+
+bindkey '\e[A' history-search-backward
+bindkey '\e[B' history-search-forward
+
+# paths and configs
+setopt hist_ignore_space
+[[ -e "$HOME/.profile" ]] && source $HOME/.profile
 [[ -d "$HOME/.local/bin" ]] && export PATH=$PATH:$HOME/.local/bin
 
-# Aliases and logic for Darwin and other devices
+# aliases and logic for Darwin and other devices
+[[ "$(which exa >> /dev/null; echo $?)" == 0  ]] && alias -g ls='exa'
 if [[ `uname` == "Darwin" ]];
 then
-    test -e "$HOME/.iterm2_shell_integration.zsh" && source "$HOME/.iterm2_shell_integration.zsh"
+    [[ -e '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' ]] && alias chrome='/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome'
+    [[ -e '/Applications/Visual Studio Code.app/Contents/Resources/app/bin' ]] && alias code='/Applications/Visual\ Studio\ Code.app/Contents/Resources/app/bin'
+    [[ -e "$HOME/.iterm2_shell_integration.zsh" ]] && source "$HOME/.iterm2_shell_integration.zsh"
+    export PATH="/usr/local/sbin:$PATH"
     alias airport=/System/Library/PrivateFrameworks/Apple80211.framework/Versions/A/Resources/airport
     alias cclip="pbcopy"
     alias ttlish="sudo sysctl net.inet.ip.ttl=65"
@@ -22,14 +42,12 @@ else
     alias ttlish="sudo sysctl net.ipv4.ip_default_ttl=65"
 fi
 
-if [[ -d "$HOME/.nvm" ]];
-then
-    export NVM_DIR="$HOME/.nvm"
-    [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-fi
+alias lsa='ls -lah'
+alias la='ls -lah'
+alias ll='ls -lh'
 
 [[ "$(which thefuck >> /dev/null; echo $?)" == 0 ]] && eval $(thefuck --alias)
 
-# Usefull git aliases
+# git aliases
 alias gitresovle="git commit -a --no-edit && git push"
 alias gitprune="git branch -lq | sed -e 's/^.*master//' | xargs git branch -D"
