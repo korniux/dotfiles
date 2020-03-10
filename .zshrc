@@ -6,6 +6,7 @@ zplug "zsh-users/zsh-syntax-highlighting", defer:2
 zplug "lukechilds/zsh-nvm"
 zplug "plugins/git", from:oh-my-zsh
 zplug "themes/agnoster", from:oh-my-zsh, as:theme
+zplug "lib/clipboard", from:oh-my-zsh
 zplug "plugins/command-not-found", from:oh-my-zsh
 
 if ! zplug check --verbose; then
@@ -42,9 +43,16 @@ else
     alias ttlish="sudo sysctl net.ipv4.ip_default_ttl=65"
 fi
 
-alias lsa='ls -lah'
-alias la='ls -lah'
-alias ll='ls -lh'
+if [[ "$(which exa >> /dev/null; echo $?)" == 0 ]];
+then
+    alias la='exa -la'
+    alias ll='exa -l'
+else
+    export LSCOLORS="Gxfxcxdxbxegedabagacad"
+    alias lsa='ls -lah'
+    alias la='ls -lah'
+    alias ll='ls -lh'
+fi
 
 [[ "$(which thefuck >> /dev/null; echo $?)" == 0 ]] && eval $(thefuck --alias)
 
