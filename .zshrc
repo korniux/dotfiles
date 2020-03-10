@@ -26,7 +26,6 @@ setopt hist_ignore_space
 [[ -d "$HOME/.local/bin" ]] && export PATH=$PATH:$HOME/.local/bin
 
 # aliases and logic for Darwin and other devices
-[[ "$(which exa >> /dev/null; echo $?)" == 0  ]] && alias -g ls='exa'
 if [[ `uname` == "Darwin" ]];
 then
     [[ -e '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' ]] && alias chrome='/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome'
