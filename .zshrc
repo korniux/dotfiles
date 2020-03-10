@@ -5,8 +5,11 @@ source ~/.zplug/init.zsh
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
 zplug "lukechilds/zsh-nvm"
 zplug "plugins/git", from:oh-my-zsh
-zplug "themes/agnoster", from:oh-my-zsh, as:theme
 zplug "lib/clipboard", from:oh-my-zsh
+zplug "lib/key-bindings", from:oh-my-zsh
+zplug "lib/completion", from:oh-my-zsh
+zplug "lib/history", from:oh-my-zsh
+zplug "themes/agnoster", from:oh-my-zsh, as:theme
 zplug "plugins/command-not-found", from:oh-my-zsh
 
 if ! zplug check --verbose; then
@@ -17,9 +20,6 @@ if ! zplug check --verbose; then
 fi
 zplug load
 
-bindkey '\e[A' history-search-backward
-bindkey '\e[B' history-search-forward
-
 # paths and configs
 setopt hist_ignore_space
 [[ -e "$HOME/.profile" ]] && source $HOME/.profile
@@ -29,23 +29,21 @@ setopt hist_ignore_space
 if [[ `uname` == "Darwin" ]];
 then
     [[ -e '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' ]] && alias chrome='/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome'
-    [[ -e '/Applications/Visual Studio Code.app/Contents/Resources/app/bin' ]] && alias code='/Applications/Visual\ Studio\ Code.app/Contents/Resources/app/bin'
     [[ -e "$HOME/.iterm2_shell_integration.zsh" ]] && source "$HOME/.iterm2_shell_integration.zsh"
     export PATH="/usr/local/sbin:$PATH"
     alias airport=/System/Library/PrivateFrameworks/Apple80211.framework/Versions/A/Resources/airport
-    alias cclip="pbcopy"
     alias ttlish="sudo sysctl net.inet.ip.ttl=65"
 else
     [[ -d "/usr/local/go" ]] && export PATH=$PATH:/usr/local/go/bin
     [[ "$(which go >> /dev/null; echo $?)" == 0 ]] && export GOPATH="$HOME/Development/golang"
-    alias cclip="xclip -selection clipboard"
     alias ttlish="sudo sysctl net.ipv4.ip_default_ttl=65"
 fi
 
 if [[ "$(which exa >> /dev/null; echo $?)" == 0 ]];
 then
-    alias la='exa -la'
-    alias ll='exa -l'
+    alias ls='exa'
+    alias la='ls -la'
+    alias ll='ls -l'
 else
     export LSCOLORS="Gxfxcxdxbxegedabagacad"
     alias lsa='ls -lah'
