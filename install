@@ -1,0 +1,92 @@
+#!/usr/bin/env python3
+
+import os
+import platform
+import subprocess
+import pathlib
+from shutil import which, copyfile
+from difflib import Differ
+from pprint import pprint
+
+PWD = os.getcwd()
+PLATFORM = platform.system()
+VERSION = "3.0"
+HOME = os.path.expanduser('~')
+ROWS, COLS = os.popen('stty size', 'r').read().split()
+
+print(r"""
+ _______________________________
+|  _                            \
+| | | ____   _____               \
+| | |/ \  \ /  /_ | Scripted      \
+| |    /\  Y  /  \| Configuration /
+| |_|\_\/_/ \_\     Installer    / 
+|_______________________________/
+|
+| Rev. {0}
+| Platform: {1}
+|
+""".format(VERSION, PLATFORM))
+
+def brew(package):
+  if package is not None and which(package) is None:
+    print("brew: installing {}...".format(package))
+    subprocess.run(["brew", "install", package])
+  else:
+    print("brew: {} is already installed".format(package))
+
+def installConf(srcPath, destPath):
+  if os.path.isfile(srcPath) and os.path.isfile(destPath):
+    print("Comparing config {}".format(srcPath) + '\n' + '=' * int(ROWS))
+    d = {'src': {'path': srcPath}, 'dest': {'path': destPath}}
+    for key in d:
+      f = open (d[key]['path'], 'r')
+      d[key]['lines'] = f.readlines()
+      f.close()
+    diff = Differ()
+    dcl = list(diff.compare(d['dest']['lines'], d['src']['lines']))
+    for i, val in enumerate(dcl):
+      if val[0] == '-' or val[0] == '+':
+        print('{} | {}'.format(i + 1, val.replace('\n', '')))
+    proceed = input('=' * int(ROWS) + '\nApply changes? [y/N] ')
+    if proceed in ['Y', 'y']:
+      print('Copying to {}'.format(destPath))
+      copyfile(srcPath, destPath)
+
+def installVim():
+  libs = [
+    "https://github.com/itchyny/lightline.vim.git",
+    "https://github.com/itchyny/vim-gitbranch.git",
+  ]
+  brew("vim")
+  if os.path.exists("{}/.vim/autoload".format(HOME)) is False:
+    print("installVim: installing pathogen...")
+    pathlib.Path("{}/.vim/autoload".format(HOME)).mkdir(parents=True, exist_ok=True)
+    pathlib.Path("{}/.vim/bundle".format(HOME)).mkdir(parents=True, exist_ok=True)
+  else:
+    os.chdir("{}/.vim/bundle".format(HOME))
+    for lib in libs:
+      print("installVim: installing {}...".format(lib))
+      subprocess.run(["git", "clone", lib])
+    os.chdir(PWD)
+
+def installZsh():
+  brew("zsh")
+  if os.path.exists("{}/.zplug".format(HOME)) is None:
+    print("installZsh: installing zplug")
+    subprocess.run([which("bash"), "-c", "$(curl -fsSL https://raw.githubusercontent.com/zplug/installer/master/installer.zsh)"])
+
+def darwinActions():
+  if which("brew") is None:
+    print("darwinActions: brew is not detected, installing...")
+    subprocess.run([which("bash"), "-c", "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"])
+  else:
+    print("darwinActions: brew is already installed")
+    installZsh()
+    installVim()
+
+if __name__ == "__main__":
+  if PLATFORM == 'Darwin':
+    darwinActions()
+    installConf('.zshrc', '{}/.zshrc'.format(HOME))
+    installConf('.vimrc', '{}/.vimrc'.format(HOME))
