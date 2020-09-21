@@ -7,8 +7,15 @@
 | |_|\_\/_/ \_\     Installer    / 
 |_______________________________/
 |
-| updated at 2019-02-21 
-| contains: zsh, vim, vscode
-| platforms: linux, darwin
+| contains: zsh, vim
+| platforms: darwin
 |
 ```
+
+## Roadmap
+- [x] Move to python
+- [x] Configs with diffs
+- [ ] Applying diffs only
+- [ ] Separate configs for platforms
+- [ ] Single install file via curl
+- [ ] Dependencies auto-installation
