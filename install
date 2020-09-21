@@ -15,21 +15,19 @@ HOME = os.path.expanduser('~')
 ROWS, COLS = os.popen('stty size', 'r').read().split()
 
 print(r"""
- _______________________________
-|  _                            \
-| | | ____   _____               \
-| | |/ \  \ /  /_ | Scripted      \
-| |    /\  Y  /  \| Configuration /
-| |_|\_\/_/ \_\     Installer    / 
-|_______________________________/
-|
-| Rev. {0}
-| Platform: {1}
-|
-""".format(VERSION, PLATFORM))
+____   __
+\   | |  |           __ 
+ |  | |  |__     ___|  |
+ |  |/  / \  \  /  / \| 
+ |  |\  \  \  \/  /     
+ |  | |  | /  /\  \     
+ |  | |__|/__/  \__\    
+  \ |
+   \| Dotfiles installer.
+""")
 
 def brew(package):
-  if package is not None and which(package) is None:
+  if package and not which(package):
     print("brew: installing {}...".format(package))
     subprocess.run(["brew", "install", package])
   else:
@@ -48,7 +46,7 @@ def installConf(srcPath, destPath):
     for i, val in enumerate(dcl):
       if val[0] == '-' or val[0] == '+':
         print('{} | {}'.format(i + 1, val.replace('\n', '')))
-    proceed = input('=' * int(ROWS) + '\nApply changes? [y/N] ')
+    proceed = input('Apply changes? [y/N] ')
     if proceed in ['Y', 'y']:
       print('Copying to {}'.format(destPath))
       copyfile(srcPath, destPath)
@@ -59,7 +57,7 @@ def installVim():
     "https://github.com/itchyny/vim-gitbranch.git",
   ]
   brew("vim")
-  if os.path.exists("{}/.vim/autoload".format(HOME)) is False:
+  if not os.path.exists("{}/.vim/autoload".format(HOME)):
     print("installVim: installing pathogen...")
     pathlib.Path("{}/.vim/autoload".format(HOME)).mkdir(parents=True, exist_ok=True)
     pathlib.Path("{}/.vim/bundle".format(HOME)).mkdir(parents=True, exist_ok=True)
@@ -72,12 +70,12 @@ def installVim():
 
 def installZsh():
   brew("zsh")
-  if os.path.exists("{}/.zplug".format(HOME)) is None:
+  if not os.path.exists("{}/.zplug".format(HOME)):
     print("installZsh: installing zplug")
     subprocess.run([which("bash"), "-c", "$(curl -fsSL https://raw.githubusercontent.com/zplug/installer/master/installer.zsh)"])
 
 def darwinActions():
-  if which("brew") is None:
+  if not which("brew"):
     print("darwinActions: brew is not detected, installing...")
     subprocess.run([which("bash"), "-c", "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"])
   else:

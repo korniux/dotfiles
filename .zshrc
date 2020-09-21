@@ -28,6 +28,7 @@ setopt hist_ignore_space
 # aliases and logic for Darwin and other devices
 if [[ `uname` == "Darwin" ]];
 then
+    zplug "tysonwolker/iterm-tab-colors"
     [[ -e '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' ]] && alias chrome='/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome'
     [[ -e "$HOME/.iterm2_shell_integration.zsh" ]] && source "$HOME/.iterm2_shell_integration.zsh"
     export PATH="/usr/local/sbin:$PATH"
