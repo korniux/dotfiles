@@ -10,7 +10,7 @@ from pprint import pprint
 
 PWD = os.getcwd()
 PLATFORM = platform.system()
-VERSION = "3.0"
+VERSION = "3.1"
 HOME = os.path.expanduser('~')
 ROWS, COLS = os.popen('stty size', 'r').read().split()
 
@@ -23,8 +23,8 @@ ____   __
  |  | |  | /  /\  \     
  |  | |__|/__/  \__\    
   \ |
-   \| Dotfiles installer.
-""")
+   \| Dotfiles installer v{}
+""".format(VERSION))
 
 def brew(package):
   if package and not which(package):
@@ -33,30 +33,19 @@ def brew(package):
   else:
     print("brew: {} is already installed".format(package))
 
-def installConf(srcPath, destPath):
-  if os.path.isfile(srcPath) and os.path.isfile(destPath):
-    print("Comparing config {}".format(srcPath) + '\n' + '=' * int(ROWS))
-    d = {'src': {'path': srcPath}, 'dest': {'path': destPath}}
-    for key in d:
-      f = open (d[key]['path'], 'r')
-      d[key]['lines'] = f.readlines()
-      f.close()
-    diff = Differ()
-    dcl = list(diff.compare(d['dest']['lines'], d['src']['lines']))
-    for i, val in enumerate(dcl):
-      if val[0] == '-' or val[0] == '+':
-        print('{} | {}'.format(i + 1, val.replace('\n', '')))
-    proceed = input('Apply changes? [y/N] ')
-    if proceed in ['Y', 'y']:
-      print('Copying to {}'.format(destPath))
-      copyfile(srcPath, destPath)
+def yay(package):
+  if package and not which(package):
+    print("yay: installing {}...".format(package))
+    subprocess.run(["yay", "--noconfirm", "-S", package])
+  else:
+    print("yay: {} is already installed".format(package))
 
-def installVim():
+def installVim(pm):
   libs = [
     "https://github.com/itchyny/lightline.vim.git",
     "https://github.com/itchyny/vim-gitbranch.git",
   ]
-  brew("vim")
+  pm("vim")
   if not os.path.exists("{}/.vim/autoload".format(HOME)):
     print("installVim: installing pathogen...")
     pathlib.Path("{}/.vim/autoload".format(HOME)).mkdir(parents=True, exist_ok=True)
@@ -67,12 +56,11 @@ def installVim():
       print("installVim: installing {}...".format(lib))
       subprocess.run(["git", "clone", lib])
     os.chdir(PWD)
+  copyfile('.vimrc', '{}/.vimrc'.format(HOME))
 
-def installZsh():
-  brew("zsh")
-  if not os.path.exists("{}/.zplug".format(HOME)):
-    print("installZsh: installing zplug")
-    subprocess.run([which("bash"), "-c", "$(curl -fsSL https://raw.githubusercontent.com/zplug/installer/master/installer.zsh)"])
+def installZsh(pm):
+  pm("zsh")
+
 
 def darwinActions():
   if not which("brew"):
@@ -80,11 +68,14 @@ def darwinActions():
     subprocess.run([which("bash"), "-c", "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"])
   else:
     print("darwinActions: brew is already installed")
-    installZsh()
-    installVim()
+    installZsh(brew)
+    installVim(brew)
+
+def linuxActions():
+
 
 if __name__ == "__main__":
   if PLATFORM == 'Darwin':
     darwinActions()
-    installConf('.zshrc', '{}/.zshrc'.format(HOME))
-    installConf('.vimrc', '{}/.vimrc'.format(HOME))
+  else:
+    linuxActions()

@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+alias airport=/System/Library/PrivateFrameworks/Apple80211.framework/Versions/A/Resources/airport
+alias ttlish="sudo sysctl net.inet.ip.ttl=65"
+
+[[ -e "$HOME/.iterm2_shell_integration.zsh" ]] && source "$HOME/.iterm2_shell_integration.zsh"
+
+[[ -d "$HOME/Library/Python/3.8/bin" ]] && export PATH=$PATH:$HOME/Library/Python/3.8/bin
+export PATH="/usr/local/sbin:$PATH"
+
+
