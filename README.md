@@ -1,21 +1,25 @@
 ```
- _______________________________
-|  _                            \
-| | | ____   _____               \
-| | |/ \  \ /  /_ | Scripted      \
-| |    /\  Y  /  \| Configuration /
-| |_|\_\/_/ \_\     Installer    / 
-|_______________________________/
-|
-| contains: zsh, vim
-| platforms: darwin
-|
+ ___________________________
+|  _                        \
+| | | ____   _____           \
+| | |/ \  \ /  /_ | Dotfiles  \
+| |    /\  Y  /  \| zsh, vim  /
+| |_|\_\/_/ \_\              /
+|___________________________/
 ```
 
-## Roadmap
-- [x] Move to python
-- [x] Configs with diffs
-- [ ] Applying diffs only
-- [ ] Separate configs for platforms
-- [ ] Single install file via curl
-- [ ] Dependencies auto-installation
+## Installation
+
+```bash
+$ cp -r ./dist/.* ~/
+```
+
+## Features
+
+- [zinit](https://github.com/zdharma-continuum/zinit)
+- vim's pathogen
+
+## ToDo
+
+- vim to [nvim](https://neovim.io/)
+- find more useful plugins from OMZ

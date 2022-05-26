@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-alias ttlish="sudo sysctl net.ipv4.ip_default_ttl=65"
