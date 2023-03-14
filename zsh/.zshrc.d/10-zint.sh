@@ -13,29 +13,4 @@ source "$HOME/.local/share/zinit/zinit.git/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
-# Load a few important annexes, without Turbo
-# (this is currently required for annexes)
-zinit light-mode for \
-    zdharma-continuum/zinit-annex-as-monitor \
-    zdharma-continuum/zinit-annex-bin-gem-node \
-    zdharma-continuum/zinit-annex-patch-dl \
-    zdharma-continuum/zinit-annex-rust
-
 ### End of Zinit's installer chunk
-
-zinit light zsh-users/zsh-autosuggestions
-zinit light zdharma-continuum/fast-syntax-highlighting
-
-zinit snippet OMZL::git.zsh
-zinit snippet OMZL::clipboard.zsh
-zinit snippet OMZL::key-bindings.zsh
-zinit snippet OMZL::termsupport.zsh
-zinit snippet OMZL::history.zsh
-
-zinit snippet OMZT::agnoster
-
-zinit snippet OMZP::git
-
-export NVM_SYMLINK_CURRENT="true"
-export NVM_LAZY_LOAD=true
-zinit light lukechilds/zsh-nvm

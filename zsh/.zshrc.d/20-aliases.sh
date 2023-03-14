@@ -1,5 +1,7 @@
 #!/usr/bin/env zsh
 
+[[ "$(which nvim)" ]] && alias vim="$(which nvim)"
+
 if [[ "$(which exa)" ]];
 then
   alias ls='exa'

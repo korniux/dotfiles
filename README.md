@@ -3,23 +3,24 @@
 |  _                        \
 | | | ____   _____           \
 | | |/ \  \ /  /_ | Dotfiles  \
-| |    /\  Y  /  \| zsh, vim  /
+| |    /\  Y  /  \| zsh, nvim /
 | |_|\_\/_/ \_\              /
 |___________________________/
 ```
 
 ## Installation
 
+### zsh
+
 ```bash
-$ cp -r ./dist/.* ~/
+cp zsh/* ~/
 ```
 
-## Features
+- [x] [zinit](https://github.com/zdharma-continuum/zinit)
+- [x] [asdf-vm](https://asdf-vm.com/guide/getting-started.html)
+- [x] [powerlevel10k](https://github.com/romkatv/powerlevel10k)
+- [ ] `asdf-nodejs` `asdf-direnv` auto installation
 
-- [zinit](https://github.com/zdharma-continuum/zinit)
-- vim's pathogen
+### nvim
 
-## ToDo
-
-- vim to [nvim](https://neovim.io/)
-- find more useful plugins from OMZ
+TBD
