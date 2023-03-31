@@ -1,15 +1,10 @@
 #!/usr/bin/env zsh
 
 _zinit_asdf_postclone() {
-  echo"
-asdf loaded but required plugins:
+  asdf plugin add direnv https://github.com/asdf-community/asdf-direnv.git
+  asdf direnv setup --shell zsh --version latest
 
-asdf plugin add direnv https://github.com/asdf-community/asdf-direnv.git
-asdf direnv setup --shell zsh --version latest
-
-asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git
-
-"
+  asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git
 }
 
 zinit ice depth:1 \
@@ -20,3 +15,7 @@ zinit ice depth:1 \
 zinit load asdf-vm/asdf
 
 source "${XDG_CONFIG_HOME:-$HOME/.config}/asdf-direnv/zshrc"
+
+# Usage: $ asdf (list|install|global) nodejs [version|latest]
+
+
