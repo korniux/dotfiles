@@ -11,3 +11,6 @@ export GPG_TTY=$(tty)
 [[ -d "$HOME/.local/bin" ]] && export PATH=$PATH:$HOME/.local/bin
 
 [[ "$(which nvim)" ]] && export EDITOR=$(which nvim)
+
+[[ -d "$HOME/.asdf/plugins/golang" ]] && source "$HOME/.asdf/plugins/golang/set-env.zsh"
+

@@ -2,9 +2,9 @@
 
 [[ "$(which nvim)" ]] && alias vim="$(which nvim)"
 
-if [[ "$(which exa)" ]];
+if [[ "$(which eza)" ]];
 then
-  alias ls='exa'
+  alias ls='eza'
   alias la='ls -la'
   alias ll='ls -l'
 else
