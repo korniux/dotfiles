@@ -12,3 +12,5 @@ export TERM=xterm-256color
 [[ -d "$HOME/.local/bin" ]] && export PATH=$PATH:$HOME/.local/bin
 
 [[ "$(which nvim)" ]] && export EDITOR=$(which nvim)
+
+autoload -Uz compinit && compinit

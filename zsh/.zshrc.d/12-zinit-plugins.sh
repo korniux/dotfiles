@@ -10,3 +10,5 @@ zinit snippet OMZP::git
 
 zinit light zsh-users/zsh-autosuggestions
 zinit light zdharma-continuum/fast-syntax-highlighting
+
+zinit cdreplay -q
