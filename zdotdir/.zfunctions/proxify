@@ -1,0 +1,71 @@
+# --- Custom Shell Aliases and Functions ---
+
+# Function: proxify <command> [--address <proxy_address>]
+# Description: Executes a command with HTTP_PROXY and HTTPS_PROXY environment 
+#              variables set.
+#
+# Proxy address resolution (in order):
+# 1. The value provided via the --address flag.
+# 2. The value of the global DEFAULT_PROXY environment variable.
+#
+# Usage Examples:
+#   # Use the value from the DEFAULT_PROXY variable
+#   proxify curl https://api.example.com
+#
+#   # Override the default with a specific proxy address
+#   proxify --address http://10.0.0.1:8888 npm install
+#
+#   # Command and proxy address must be separated by a space
+#   proxify --address http://user:pass@host:port git clone repo
+#
+
+# 1. Initialize variables, falling back to the DEFAULT_PROXY environment variable
+local PROXY_ADDRESS="http://127.0.0.1:7890"
+local CMD_ARGS=()
+local arg
+
+# 2. Parse arguments: Look for --address and collect the command/args
+while (( "$#" )); do
+  arg="$1"
+  case "$arg" in
+    --address)
+      if [ -n "$2" ]; then
+        PROXY_ADDRESS="$2"
+        shift 2 # Consume --address and its value
+      else
+        echo "Error: --address requires a value (e.g., http://host:port)." >&2
+        return 1
+      fi
+      ;;
+    *)
+      # Collect all non-flag arguments as the command and its parameters
+      CMD_ARGS+=("$1")
+      shift 1 # Consume the argument
+      ;;
+  esac
+done
+
+# 3. Validation
+if [ -z "$PROXY_ADDRESS" ]; then
+  echo "Error: No proxy address found." >&2
+  echo "Please use 'proxify --address <url> <command>' or set the DEFAULT_PROXY variable." >&2
+  return 1
+fi
+
+if [ ${#CMD_ARGS[@]} -eq 0 ]; then
+  echo "Error: Missing command to execute." >&2
+  echo "Usage: proxify <command> [arguments] [--address <proxy_url>]" >&2
+  return 1
+fi
+
+# 4. Execution
+echo "-> Running command through proxy: $PROXY_ADDRESS"
+
+# Execute the command with the environment variables set.
+# 'env' ensures the variables are local to this command.
+env HTTP_PROXY="$PROXY_ADDRESS" \
+    HTTPS_PROXY="$PROXY_ADDRESS" \
+    http_proxy="$PROXY_ADDRESS" \
+    https_proxy="$PROXY_ADDRESS" \
+    "${CMD_ARGS[@]}"
+

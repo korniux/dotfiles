@@ -1,14 +1,12 @@
-.PHONY: zsh nvim
+.PHONY: zsh font
 
-macos:
-	brew jandedobbeleer/oh-my-posh/oh-my-posh eza
-
-linux:
-	sudo pacman -S --needed base-devel eza neovim unzip
-	git clone https://aur.archlinux.org/yay-bin.git
-	cd yay-bin; makepkg -si
-	rm -rf yay-bin
+install: zsh font
+	brew install mise eza starship
 
 zsh:
-	rm -r ${HOME}/.zshrc.d | true
-	ln -nsf ${PWD}/zsh/.* ${HOME}/
+	ln -s ${PWD}/.zshenv ${HOME}/.zshenv
+	ln -s ${PWD}/zdotdir ${HOME}/.config/zsh
+
+font:
+	brew tap homebrew/cask-fonts
+	brew install --cask font-jetbrains-mono-nerd-font

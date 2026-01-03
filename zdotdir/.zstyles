@@ -1,0 +1,11 @@
+zstyle ':antidote:bundle' use-friendly-names 'yes'
+
+zstyle ':zsh_custom:plugin:completion' compstyle zshzoo
+zstyle ':completion::complete:*' gain-privileges 1
+
+zstyle ':zsh_custom:plugin:zshrcd' directory ${ZDOTDIR}/.zshrc.d
+zstyle ':zsh_custom:plugin:zfunctions' directory ${ZDOTDIR}/.zfunctions
+
+zstyle ':zephyr:plugin:confd' directory ${ZDOTDIR}/.zshrc.d
+zstyle ':zephyr:plugin:zfunctions' directory ${ZDOTDIR}/.zfunctions
+

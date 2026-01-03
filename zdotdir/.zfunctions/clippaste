@@ -1,0 +1,16 @@
+#!/usr/bin/env zsh
+
+# Check for OS and required clipboard utility
+if [[ "$(uname -s)" == "Darwin" ]]; then
+    # macOS: pbpaste is built-in
+    pbpaste "$@"
+elif command -v xclip &> /dev/null; then
+    # Linux: Use xclip
+    xclip -selection c -o "$@"
+elif command -v xsel &> /dev/null; then
+    # Linux: Use xsel alternative
+    xsel --clipboard --output "$@"
+else
+    echo "Error: Cannot paste. Install 'xclip' or 'xsel'." >&2
+    return 1
+fi
