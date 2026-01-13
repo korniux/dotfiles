@@ -1,6 +1,8 @@
-.PHONY: zsh font
+.PHONY: zsh font deps
 
-install: zsh font
+install: deps zsh font
+
+deps:
 	brew install mise eza starship
 
 zsh:
