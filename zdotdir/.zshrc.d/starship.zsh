@@ -1,3 +1,3 @@
 export STARSHIP_CONFIG=${ZDOTDIR}/starship.toml
 
-[[ "$(which starship)"]] && eval "$(starship init zsh)"
+[[ "$(which starship)" ]] && eval "$(starship init zsh)"
